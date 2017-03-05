@@ -1,0 +1,36 @@
+{
+  "name": "pickr",
+  "version": "2.0.0",
+  "description": "A tier 2 scheduling applicaitons for schools.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-packager . pickr --platform=darwin --arch=x64 --version=0.27.2",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SebastianGuerreroCardenas/Pickr2.0.git"
+  },
+  "author": "Sebastian & Sophie & Chris",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SebastianGuerreroCardenas/Pickr2.0/issues"
+  },
+  "homepage": "https://github.com/SebastianGuerreroCardenas/Pickr2.0#readme",
+  "devDependencies": {
+    "electron": "^1.6.1",
+    "electron-packager": "^8.5.2",
+    "electron-prebuilt": "^1.4.13"
+  },
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.17.0",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.15.0",
+    "morgan": "^1.8.1",
+    "sequelize": "^3.30.2",
+    "sequelize-cli": "^2.5.1",
+    "sqlite3": "^3.1.8"
+  }
+}
