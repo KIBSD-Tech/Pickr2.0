@@ -15,3 +15,5 @@ Pickr is an existing application created for the Kodiak Island School District. 
 3. To package the application (It will create a folder, inside is the packaged applicaiton)
 
     $ npm run build
+    
+4. To delete the build, delete all files and the directory. 
