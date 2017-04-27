@@ -16,6 +16,18 @@
 				}
 			});
 
+			$scope.unStudents = StudentResource.query({id:"activeU"}, function() {
+				console.log($scope.students);
+				for (var i=0; i<$scope.students.length; i++) {
+					var unStudent = $scope.unStudents[i];
+					if (unStudent.tutorial.length) {
+						unStudent.instructor = student.tutorial[0].teacher_name;
+						unStudent.room = student.tutorial[0].room_number;
+						unStudent.tutorial = student.tutorial[0].name;
+					}
+				}
+			});
+
 			$scope.title = function() {
 				return "Students Unassigned";
 			};

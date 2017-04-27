@@ -99,8 +99,12 @@ module.exports = (localApp, db) => {
 		  		return{
 		  			first_name: s.first_name,
 					last_name: s.last_name,
+					full_name: s.last_name + ", " + s.first_name,
 					grade_level: s.grade_level,
 					id: s.student_id,
+					tutorial: "n/a",
+					instructor: "n/a",
+					room: "n/a"
 		  		}
 		  	});
 

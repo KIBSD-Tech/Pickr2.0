@@ -1,6 +1,6 @@
 <div layout="column">
 	<div layout="row" ng-if="admin()">
-		<md-button class="md-warn md-raised" ng-click="getUnassignedStudents($event)">Haven't signed up</md-button>
+		<md-button class="md-warn md-raised" ng-click="getUnassignedStudents($event)">{{buttonTitle}}</md-button>
 	</div>
 	<table>
 		<thead>
@@ -13,7 +13,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="student in students | orderBy:sort:reverse">
+			<tr ng-repeat="student in currStudents | orderBy:sort:reverse">
 				<td>{{student.full_name}}</td>
 				<td>{{student.grade_level}}</td>
 				<td>{{student.tutorial}}</td>
