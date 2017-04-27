@@ -20,7 +20,6 @@
 			$scope.currStudents = $scope.students;
 
 			$scope.unStudents = StudentResource.query({id:"activeU"}, function() {
-				// console.log($scope.unStudents);
 				for (var i=0; i<$scope.students.length; i++) {
 					var unStudent = $scope.unStudents[i];
 					if (unStudent.tutorial.length) {
@@ -38,15 +37,6 @@
 
 
 			$scope.getUnassignedStudents= function(ev) {
-				// $mdDialog.show({
-				// 	controller: 'StudentUnassignedController',
-				// 	templateUrl: '/js/student/view/report-dialog.html',
-				// 	parent: angular.element(document.body),
-				// 	targetEvent: ev
-				// }).then(function(data) {
-				// 	//nothing
-				// });
-				console.log($scope.isUnassigned);
 				if ($scope.isUnassigned == false) {
 					$scope.currStudents = $scope.unStudents;
 					Page.title('Unassigned Students Report');

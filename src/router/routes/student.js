@@ -301,13 +301,14 @@ var importCSV = (filepath, req, res) =>{
 	})
 	.on('error', function(error){
 		console.log(error.message);
-		res.json({'status': error.message});
+		res.status(404).send({message: error.message});
 	})
 	.on('end', function() {
 
 		if (testKeys(csvData[0]) ) {
 			//send error
 			console.log('heading error');
+			res.status(404).send({message: "Headings are not correct"});
 		} else {
 			//start bulk load
 			csvData.splice(0, 1);
@@ -335,6 +336,8 @@ var importCSV = (filepath, req, res) =>{
 			db.student.bulkCreate(csvData, { ignoreDuplicates: true })
 			.catch((errors) => {
 				console.log(errors);
+				res.status(404).send({message: errors});
+
 			})
 			.then(function(){
 				fs.unlink(filepath, err => {
