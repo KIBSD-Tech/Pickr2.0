@@ -2,27 +2,59 @@
 <html>
   <head>
     <meta charset="UTF-8">
+    <link rel="icon" href="../../favicon.ico">
     <title>Pickr</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="js/bootstrap.min.js"></script>
     <script>window.$ = window.jQuery = require('jquery');</script>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/styles.css" rel="stylesheet">
+
   </head>
   <body>
-    <h1>Pickr</h1>
+    <div class="site-wrapper">
 
-    <p>Here is where we hopefully want to have a link to the local host.</p><br>
-    <h3>URL:</h3><p><span id="ip"></span></span>:3000</p><br>
-    <h3>Admin</h3>
-    <p>username: admin</p>
-    <p>password: <span id="admin"></span></p><br>
+      <div class="site-wrapper-inner">
 
-    <h3>Teacher</h3>
-    <p>username: teacher</p>
-    <p>password: <span id="teacher"></span></p><br>
+        <div class="cover-container">
 
-    <script>
-	    // You can also require other files to run in this process
-	    require('./../electron/renderer.js')
-  	</script>
+          <div class="masthead clearfix">
+            <div class="inner">
+              <h4 class="masthead-brand">Pickr2.0</h4>
+              <nav class="nav nav-masthead">
+
+              </nav>
+            </div>
+          </div>
+
+          <div class="inner cover">
+            <h3>Your app is running at...</h3>
+            <h2><span id="ip"></span>:3000</h2><br>
+            <h4 class="underlined">Admin Login</h4>
+            <p class="lead">Username: admin</span></p>
+            <p class="lead">Password: <span class="bigger" id="admin"></span></p><br>
+
+            <h4 class="underlined">Teacher Login</h4>
+            <p class="lead">Username: teacher</p>
+            <p class="lead">Password: <span class="bigger" id="teacher"></span></p><br>
+
+            <div class="mastfoot">
+            <div class="inner">
+              <p>Pickr2.0, an Electron app, created by @kibsd-tech on GitHub</p>
+            </div>
+          </div>
+
+            <script>
+        	    // You can also require other files to run in this process
+        	    require('./../electron/renderer.js')
+          	</script>
+          </div>
+        </div>
 
   </body>
 </html>
