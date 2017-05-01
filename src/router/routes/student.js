@@ -99,8 +99,12 @@ module.exports = (localApp, db) => {
 		  		return{
 		  			first_name: s.first_name,
 					last_name: s.last_name,
+					full_name: s.last_name + ", " + s.first_name,
 					grade_level: s.grade_level,
 					id: s.student_id,
+					tutorial: "n/a",
+					instructor: "n/a",
+					room: "n/a"
 		  		}
 		  	});
 
@@ -175,8 +179,8 @@ module.exports = (localApp, db) => {
 		const last_name = req.body.student.last_name;
 		const password = req.body.password;
 		//add something for multi threading here
-		//loginCheck(first_name, last_name, password, req, res);
-		devLoginCheck(first_name,last_name,req,res);
+		loginCheck(first_name, last_name, password, req, res);
+		// devLoginCheck(first_name,last_name,req,res);
 	});
 
 	//importing list
@@ -297,13 +301,14 @@ var importCSV = (filepath, req, res) =>{
 	})
 	.on('error', function(error){
 		console.log(error.message);
-		res.json({'status': error.message});
+		res.status(404).send({message: error.message});
 	})
 	.on('end', function() {
 
 		if (testKeys(csvData[0]) ) {
 			//send error
 			console.log('heading error');
+			res.status(404).send({message: "Headings are not correct"});
 		} else {
 			//start bulk load
 			csvData.splice(0, 1);
@@ -331,6 +336,8 @@ var importCSV = (filepath, req, res) =>{
 			db.student.bulkCreate(csvData, { ignoreDuplicates: true })
 			.catch((errors) => {
 				console.log(errors);
+				res.status(404).send({message: errors});
+
 			})
 			.then(function(){
 				fs.unlink(filepath, err => {
