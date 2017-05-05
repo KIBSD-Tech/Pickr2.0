@@ -1,7 +1,7 @@
 # Pickr2.0
 Pickr is an existing application created for the Kodiak Island Borough School District. The original source code is at https://github.com/miketay/kodiak-picker.
 
-Pickr2.0 is a modified application created for distribution by Kodiak Island Borough School District by Carnegie Mellon University Information Systems students. Hosted at kibsd-tech.github.io/Hosting-Pickr2 for direct download. 
+Pickr2.0 is a modified application created for distribution by Kodiak Island Borough School District by Carnegie Mellon University Information Systems students. Hosted at https://kibsd-tech.github.io/Hosting-Pickr2/ for direct download. 
 
 
 ## Getting Started
