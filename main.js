@@ -6,6 +6,11 @@ const BrowserWindow = electron.BrowserWindow;
 
 const path = require('path');
 const url = require('url');
+var os = require('os');
+var ifaces = os.networkInterfaces();
+
+
+
 
 function createWindow () {
   // Create the browser window.
@@ -13,7 +18,7 @@ function createWindow () {
 
   // and load the index.html of the app.
   mainWindow.loadURL(url.format({
-    pathname: path.join(__dirname, 'index.html'),
+    pathname: path.join(__dirname, 'electron/index.html'),
     protocol: 'file:',
     slashes: true
   }));
@@ -29,6 +34,53 @@ function createWindow () {
     mainWindow = null
   })
 }
+
+//This is the event handeler for when the electron render 
+//process asks for the paswords to display
+electron.ipcMain.on('passwords', (event,arg) => {
+  console.log(arg);
+  db.user.findAll().then((users) => {
+    var responseJSON = users.map((user) => {
+        const name = user.name;
+
+        if (user.name === 'admin') {
+          return {
+            admin: user.password
+          }
+        } else if (user.name === 'teacher') {
+          return {
+            teacher: user.password
+          }
+        } else{
+          return {}
+        }
+      });
+
+    Object.keys(ifaces).forEach(function (ifname) {
+      var alias = 0;
+
+      ifaces[ifname].forEach(function (iface) {
+        if ('IPv4' !== iface.family || iface.internal !== false) {
+          // skip over internal (i.e. 127.0.0.1) and non-ipv4 addresses
+          return;
+        }
+
+        if (alias >= 1) {
+          // this single interface has multiple ipv4 addresses
+          //console.log(ifname + ':' + alias, iface.address);
+        } else {
+          // this interface has only one ipv4 adress
+          if (ifname == 'en0') {
+            responseJSON.push({'en0': iface.address});
+          }
+        }
+        ++alias;
+      });
+    });
+
+    event.sender.send('passwords', responseJSON);
+  });
+});
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
@@ -61,35 +113,53 @@ var morgan = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require("body-parser");
 var db = require('./src/config/db.js');
+
+localApp.use(express.static(path.join(__dirname, 'webroot')));
+
+
+
 var router = require('./src/router/index.js');
-// var session = require('express-session');
-// var flash = require('connect-flash');
 
-// require('passport');
-// require('./config/passport').init(passport);
-
-// localApp.use(cookieParser());
 // get information from html forms
-// localApp.use(bodyParser()); 
+localApp.use(bodyParser.json());
+localApp.use(bodyParser.urlencoded({ extended: true })); 
 
-// required for passport
-// localApp.use(session({ secret: 'asdfhasdlkjfhasdkfhasdlkfhsljh' })); // session secret
-// localApp.use(passport.initialize());
-// localApp.use(passport.session()); // persistent login sessions
-// localApp.use(flash()); // use connect-flash for flash messages stored in session
 
 localApp.use(morgan('tiny')); //prints useful info the terminal
 router(localApp,db);
 
-
-
-// Catch any routes not already handed with an error message
-localApp.use((request, response) => {
-  var message = 'Error, did not understand path' + request.path;
-  response.status(404).end(message);
+localApp.get('*', (req, res) =>{
+  res.sendfile('webroot/index.html');
 });
 
+
+//creates a password
+var createPassword = () => {
+  const randomstring = Math.random().toString(36).slice(-6);
+  console.log('Password created to:' + randomstring);
+  return randomstring
+}
+
+//checks if there are users, if not, it creates the two main users.
+var createUsers = () => {
+  //Check users and see if users exists
+  db.user.findAndCountAll().then((users) => {
+    console.log( users.count);
+    if (users.count === 0) {
+      db.user.bulkCreate([
+      {'name': 'admin', 'role': 'admin', 'password': createPassword() },
+      {'name': 'teacher', 'role': 'teacher', 'password': createPassword() } ]).then(() => {
+        console.log('Users are created for the first time');
+      });
+    } else {
+      console.log("Starting Application");
+    }
+  });
+}
+
+//starts the main server, and checks the database is set up.
 db.connection.sync().then(() => {
+  createUsers()
   httpServer.listen(3000, function() {
     console.log('listening on port 3000');
   });
