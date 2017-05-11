@@ -17,3 +17,7 @@ Pickr2.0 is a modified application created for distribution by Kodiak Island Bor
 3. To package the application (It will create a folder, inside is the packaged applicaiton)
 
     $ npm run build
+
+    
+4. To delete the build, delete all files and the directory. 
+
