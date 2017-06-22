@@ -4,7 +4,9 @@ module.exports = (connection, Sequelize) =>  {
         room_number: Sequelize.STRING,
         teacher_name: Sequelize.STRING,
         max_students: Sequelize.INTEGER,
-        approved: {type: Sequelize.BOOLEAN, allowNull: false, defaultValue: false }
+        // approved attribute for teacher verification
+        // not currently in use - for future development
+        approved: {type: Sequelize.BOOLEAN, allowNull: false, defaultValue: false } 
     });
     return Tutorial;
 };

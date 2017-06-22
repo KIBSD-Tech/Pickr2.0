@@ -7,7 +7,6 @@ module.exports = (localApp, db) => {
 
 	//deletes a student, but dont know which one
 	localApp.delete('/api/students/:id', (req, res) => {
-		console.log("req.params etc. ", req.params.id.slice(0,-5));
 		db.student.destroy({
 			where: {
 				id: req.params.id.slice(0,-5)
@@ -41,7 +40,6 @@ module.exports = (localApp, db) => {
 			]
 		}).then((student) => {
 			var responseJSON = student.map((student) => {
-				 //console.log( JSON.parse(JSON.stringify(student)) );
 				return {
 					full_name: student.full_name,
 					first_name: student.first_name,
@@ -49,7 +47,6 @@ module.exports = (localApp, db) => {
 					grade_level: student.grade_level,
 					id: student.student_id,
 					tutorial: student.tutorials.map((tutorial) => {
-					 //console.log( tutorial.room_number );
 						return {
 							id: tutorial.id,
 							name: tutorial.name,
@@ -69,7 +66,6 @@ module.exports = (localApp, db) => {
 					})
 				}
 			});
-			//console.log(responseJSON[0].tutorial, responseJSON[0].tutorial[0].cycle);
 			res.json(responseJSON);
 		});
 	});
@@ -184,7 +180,7 @@ module.exports = (localApp, db) => {
 	});
 
 	//importing list
-	//add error to resplonse
+	//add error to response
 	localApp.post('/api/students/import.json', upload.single('file'),function(req, res) {
 		const filepath = req.file.path;
 		importCSV(filepath,req, res);
@@ -210,7 +206,6 @@ var devLoginCheck = (first_name, last_name,req, res) => {
 					}]
 				}]
 		}).then((student) => {
-		console.log(JSON.parse(JSON.stringify(student)));
 		res.json({"student": { first_name: student.first_name,
 							   last_name: student.last_name,
 								sid: student.student_id,
@@ -265,7 +260,6 @@ var loginCheck = (first_name, last_name, password, req, res) =>{
 					}]
 				}]
 			}).then((student) => {
-				console.log(JSON.parse(JSON.stringify(student)));
 				if (student.student_id == password) {
 					res.json({"student": { first_name: student.first_name,
 										   last_name: student.last_name,
@@ -307,7 +301,7 @@ var importCSV = (filepath, req, res) =>{
 
 		if (testKeys(csvData[0]) ) {
 			//send error
-			console.log('heading error');
+			console.log('Heading Error');
 			res.status(404).send({message: "Headings are not correct"});
 		} else {
 			//start bulk load
@@ -316,7 +310,6 @@ var importCSV = (filepath, req, res) =>{
 
 			//check if any of the data sets already exists
 			csvData.forEach((row, index) => {
-				console.log(index);
 				db.student.findOne({
 					where: {
 						student_id: row.student_id
@@ -325,7 +318,6 @@ var importCSV = (filepath, req, res) =>{
 					if (student != null) {
 						student.grade_level = row.grade_level
 						student.save().then(() => {
-							console.log(row.last_name + ' grade was updated to ' + row.grade_level);
 						});
 					}
 				});

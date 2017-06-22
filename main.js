@@ -38,7 +38,6 @@ function createWindow () {
 //This is the event handeler for when the electron render 
 //process asks for the paswords to display
 electron.ipcMain.on('passwords', (event,arg) => {
-  console.log(arg);
   db.user.findAll().then((users) => {
     var responseJSON = users.map((user) => {
         const name = user.name;
@@ -135,16 +134,25 @@ localApp.get('*', (req, res) =>{
 
 //creates a password
 var createPassword = () => {
-  const randomstring = Math.random().toString(36).slice(-6);
-  console.log('Password created to:' + randomstring);
-  return randomstring
+  // the initial seed
+  Math.seed = new Date().valueOf();
+ 
+  Math.seededRandom = function(max, min) {
+      max = max || 1;
+      min = min || 0;
+   
+      Math.seed = (Math.seed * 9301 + 49297) % 233280;
+      var rnd = Math.seed / 233280;
+   
+      return min + rnd * (max - min);
+  }
+  return (Math.seededRandom() + Math.random()).toString(36).slice(-6);
 }
 
 //checks if there are users, if not, it creates the two main users.
 var createUsers = () => {
   //Check users and see if users exists
   db.user.findAndCountAll().then((users) => {
-    console.log( users.count);
     if (users.count === 0) {
       db.user.bulkCreate([
       {'name': 'admin', 'role': 'admin', 'password': createPassword() },

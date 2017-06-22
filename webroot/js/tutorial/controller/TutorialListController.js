@@ -86,6 +86,7 @@
 
 			$scope.locked = function(type) {
 				if (!!$scope.tutorial[type].id) {
+					console.log($scope.tutorial[type].id);
 					return !!$scope.tutorial[type].student_tutorial.locked;
 				}
 				return false;

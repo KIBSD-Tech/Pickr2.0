@@ -34,7 +34,7 @@
 						$scope.deleting = false;
 					});
 				}, function() {
-					// do nufin
+					// does nothing
 				});
 			};
 

@@ -12,8 +12,7 @@ module.exports = (localApp, db) => {
 				{
 					model: db.cycle,
 					//where: db.Sequelize.or({status: 'Active'},{status: 'Open'})
-					where: {status: 'Open',
-							approved: true}	
+					where: {status: 'Open'}	
 				},
 				{
 					model:db.student
@@ -39,10 +38,6 @@ module.exports = (localApp, db) => {
 					}
 
 				});
-
-
-				//console.log(responseJSON);
-				//console.log(JSON.parse(JSON.stringify(tutorials)));
 				res.json(responseJSON);
 			});
 		} else {
@@ -79,7 +74,6 @@ module.exports = (localApp, db) => {
 		db.cycle.findAll().then((cycles) => {
 
 			var responseJSON = cycles.map((cycle) => {
-				// console.log(cycle);
 				return {
 					id: cycle.id,
 					name: cycle.name,
@@ -92,13 +86,11 @@ module.exports = (localApp, db) => {
 
 	// gets tutorials for a cycle id 
 	localApp.get('/api/cycles/:id', (req, res) => {
-		const reqid = req.params.id.slice(0,-5);
 		db.cycle.findOne({
 			where: {
 				id: reqid
 			}
 		}).then((cycle) => {
-			console.log("got the cycle", cycle.id);
    			var responseJSON = {
    				id: cycle.id,
    				name: cycle.name,
@@ -118,14 +110,12 @@ module.exports = (localApp, db) => {
 			res.json(cycle);
 		})
 		.catch(function(errors) {
-			console.log(errors)
 		});
 	});
 
 	//deletes a cycle
 	localApp.delete('/api/cycles/:id', (req, res) => {
 		const reqid = req.params.id.slice(0,-5);
-		// console.log(req.params.id.slice(0,-5));
 		db.cycle.destroy({
 			where: {
 				id: reqid
@@ -133,7 +123,6 @@ module.exports = (localApp, db) => {
 			cascade: false
 		}).then((rowDeleted) => {
 			//still have to check if it might be more than one (if it deletes all the associated tutorials it is in)
-			console.log(rowDeleted);
 			if(rowDeleted >= 1) {
 				res.json({numOfRowsDeleted: rowDeleted}); //might want to change response
 			}
